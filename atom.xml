@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>Coding Profile</title>
+  
+  <subtitle>Record the daily routine of coding</subtitle>
+  <link href="http://example.com/atom.xml" rel="self"/>
+  
+  <link href="http://example.com/"/>
+  <updated>2022-09-19T15:08:18.829Z</updated>
+  <id>http://example.com/</id>
+  
+  <author>
+    <name>zzzmx-josh</name>
+    
+  </author>
+  
+  <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>博客常用命令</title>
+    <link href="http://example.com/2022/09/19/%E5%8D%9A%E5%AE%A2%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/"/>
+    <id>http://example.com/2022/09/19/%E5%8D%9A%E5%AE%A2%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/</id>
+    <published>2022-09-19T15:01:29.000Z</published>
+    <updated>2022-09-19T15:08:18.829Z</updated>
+    
+    <content type="html"><![CDATA[<p>记录下博客常用命令</p><p>新建文章：</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo new  postname</span><br></pre></td></tr></table></figure><p>部署到github.io:  </p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">hexo clean                            <span class="comment">#清除缓存       可缩写hexo c</span></span><br><span class="line">hexo generate                         <span class="comment">#生成静态文件    可缩写hexo g</span></span><br><span class="line">hexo deploy                           <span class="comment">#部署到Github   可缩写hexo d</span></span><br></pre></td></tr></table></figure><p>在浏览器中输入<a href="http://Github用户名.github.io">http://Github用户名.github.io</a> 就可以看到个人博客</p><p>也可以把部署命令写到deploy.sh里面，在命令行运行</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sh ./deploy.sh</span><br></pre></td></tr></table></figure>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;p&gt;记录下博客常用命令&lt;/p&gt;
+&lt;p&gt;新建文章：&lt;/p&gt;
+&lt;figure class=&quot;highlight bash&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;t</summary>
+      
+    
+    
+    
+    
+    <category term="git" scheme="http://example.com/tags/git/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>vscode配置FORTRAN编译环境</title>
+    <link href="http://example.com/2022/09/19/vscode%E9%85%8D%E7%BD%AEFORTRAN%E7%BC%96%E8%AF%91%E7%8E%AF%E5%A2%83/"/>
+    <id>http://example.com/2022/09/19/vscode%E9%85%8D%E7%BD%AEFORTRAN%E7%BC%96%E8%AF%91%E7%8E%AF%E5%A2%83/</id>
+    <published>2022-09-19T14:09:48.000Z</published>
+    <updated>2022-09-19T14:28:20.536Z</updated>
+    
+    <content type="html"><![CDATA[<h1 id="一、格式插件"><a href="#一、格式插件" class="headerlink" title="一、格式插件"></a>一、格式插件</h1><p>Modern Fortran： 可以支持基本的关键词的高亮</p><p>fortls：fortran-language-server，简称fortls，它对Fortran提供像专业IDE那样的更丰富的支持（自动补全，代码提示等）。基于python的一个插件，所以需要提前安装python。分为两个部分，本体和vscode的插件，首先安装本体：</p><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip3 install fortran-language-server</span><br></pre></td></tr></table></figure><p> 然后需要安装它为vscode提供的插件FORTRAN IntelliSense。只有这样，用vscode写代码时，才能与fortls产    生交互。</p><p>findent：代码自动格式化的工具，Modern Fortran自动推荐的是findent。也可以选择fprettify，都是需要pip下载的。（推荐下载findent）</p><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip3 install findent</span><br></pre></td></tr></table></figure><p>在vscode的设置文件setting.json中，加入以下的两条，使用小写，使用4格缩进。<br>    “fortran-ls.lowercaseIntrinsics”:true,”fortran.formatting.findentArgs”:[“-i4”//fortran的默认缩进是3,改成4]</p><h1 id="二、cmake-配置"><a href="#二、cmake-配置" class="headerlink" title="二、cmake 配置"></a>二、cmake 配置</h1><p>1.安装插件：</p><p>CMake：主要功能是CMake语法高亮、自动补全</p><p>CMake Tools：主要是结合VSCode IDE使用CMake这个工具，比如生成CMake项目、构建CMake项目等；</p><p>cmake对于Fortran的支持：在project中使用如下语句，便可以处理项目中的Cpp和Fortran源文件，如果不显式地提到Fortran则无法编译。</p><figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">project</span>(projectnameVERSION0.<span class="number">1</span>LANGUAGESCXXFortran)</span><br></pre></td></tr></table></figure>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;h1 id=&quot;一、格式插件&quot;&gt;&lt;a href=&quot;#一、格式插件&quot; class=&quot;headerlink&quot; title=&quot;一、格式插件&quot;&gt;&lt;/a&gt;一、格式插件&lt;/h1&gt;&lt;p&gt;Modern Fortran： 可以支持基本的关键词的高亮&lt;/p&gt;
+&lt;p&gt;fortls：fortran-la</summary>
+      
+    
+    
+    
+    
+    <category term="FORTRAN" scheme="http://example.com/tags/FORTRAN/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Hello World</title>
+    <link href="http://example.com/2022/09/17/hello-world/"/>
+    <id>http://example.com/2022/09/17/hello-world/</id>
+    <published>2022-09-17T03:22:20.727Z</published>
+    <updated>2022-09-17T03:19:01.413Z</updated>
+    
+    <content type="html"><![CDATA[<p>Welcome to <a href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p><h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure><p>More info: <a href="https://hexo.io/docs/writing.html">Writing</a></p><h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure><p>More info: <a href="https://hexo.io/docs/server.html">Server</a></p><h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure><p>More info: <a href="https://hexo.io/docs/generating.html">Generating</a></p><h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure><p>More info: <a href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;p&gt;Welcome to &lt;a href=&quot;https://hexo.io/&quot;&gt;Hexo&lt;/a&gt;! This is your very first post. Check &lt;a href=&quot;https://hexo.io/docs/&quot;&gt;documentation&lt;/a&gt; for</summary>
+      
+    
+    
+    
+    
+  </entry>
+  
+  <entry>
+    <title>MPI配置</title>
+    <link href="http://example.com/2022/09/17/MPI%E9%85%8D%E7%BD%AE/"/>
+    <id>http://example.com/2022/09/17/MPI%E9%85%8D%E7%BD%AE/</id>
+    <published>2022-09-17T02:33:32.000Z</published>
+    <updated>2022-09-17T02:40:36.136Z</updated>
+    
+    
+    
+    
+    <category term="MPI" scheme="http://example.com/categories/MPI/"/>
+    
+    
+    <category term="MPI" scheme="http://example.com/tags/MPI/"/>
+    
+  </entry>
+  
+</feed>
