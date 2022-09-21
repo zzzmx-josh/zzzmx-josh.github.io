@@ -6,7 +6,7 @@
   <link href="http://example.com/atom.xml" rel="self"/>
   
   <link href="http://example.com/"/>
-  <updated>2022-09-19T15:08:18.829Z</updated>
+  <updated>2022-09-21T15:37:38.060Z</updated>
   <id>http://example.com/</id>
   
   <author>
@@ -15,6 +15,29 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>cmake内置变量</title>
+    <link href="http://example.com/2022/09/21/cmake%E5%86%85%E7%BD%AE%E5%8F%98%E9%87%8F/"/>
+    <id>http://example.com/2022/09/21/cmake%E5%86%85%E7%BD%AE%E5%8F%98%E9%87%8F/</id>
+    <published>2022-09-21T15:15:35.000Z</published>
+    <updated>2022-09-21T15:37:38.060Z</updated>
+    
+    <content type="html"><![CDATA[<h1 id="1、系统信息："><a href="#1、系统信息：" class="headerlink" title="1、系统信息："></a>1、系统信息：</h1><ul><li>CMAKE_MAJOR_VERSION：cmake      主版本号，比如 3.4.1 中的 3</li><li>­CMAKE_MINOR_VERSION：cmake      次版本号，比如 3.4.1 中的 4</li><li>­CMAKE_PATCH_VERSION：cmake      补丁等级，比如 3.4.1 中的 1</li><li>­CMAKE_SYSTEM：系统名称，比如      Linux-­2.6.22</li><li>­CMAKE_SYSTEM_NAME：不包含版本的系统名，比如 “Linux”,      “FreeBSD” or “Windows”，注意大小写</li><li>­CMAKE_SYSTEM_VERSION：只显示系统全名中的版本部分，比如 2.6.22</li><li>­CMAKE_SYSTEM_PROCESSOR：CPU名称，比如 i686</li><li>­UNIX：在所有的类 UNIX 平台下该值为 TRUE，包括      OS X 和 cygwin</li><li>­WIN32：在所有的 win32 平台下该值为      TRUE，包括 cygwin</li></ul><h1 id="2、系统标志："><a href="#2、系统标志：" class="headerlink" title="2、系统标志："></a>2、系统标志：</h1><p>下面的变量都是BOOL类型的，如果与当前系统或编译器相符，值为True，反之为False</p><ul><li>UNIX</li><li>WIN32 for MINGW,CYGWIN,MSYS</li><li>APPLE</li><li>BORLAND</li><li>WATCOM</li><li>MSVC,MSVC_IDE,CMAKE_COMPILER_2005,MSVC60/70/71/80/90/10，针对不同的Visual C++</li><li>CMAKE_COMPILER_IS_GUNCXX/CMAKE_COMPILER_IS_GUNCC</li></ul><h1 id=""><a href="#" class="headerlink" title=" "></a> </h1><h1 id="3、编译时选项："><a href="#3、编译时选项：" class="headerlink" title="3、编译时选项："></a>3、编译时选项：</h1><ul><li><p>BUIlD_SHARED_LIBS：将所有程序库的target设置成共享库</p></li><li><p>CMAKE_BUIlD_TYPE：控制构建类型，以下为可选参数</p><p>None：default；Debug：生成调试信息；Release：发布版本，进行最佳化，需要注意这个值不会在configure的事吼自动初始化，需要手动指定</p></li><li><p>CMAKE_C_FLAGS</p></li><li><p>CMAKE_C_FLAGS_DEBUG</p></li><li><p>CMAKE_C_FLAGS_RELEASE</p></li><li><p>CMAKE_CXX_FLAGS</p></li><li><p>CMAKE_CXX_FLAGS_DEBUG</p></li><li><p>CMAKE_CXX_FLAGS_RELEASE</p></li></ul><h1 id="4、目录："><a href="#4、目录：" class="headerlink" title="4、目录："></a>4、目录：</h1><ul><li>PROJECT_SOURCE_DIR ： CMakeList.txt 所在的文件夹路径</li><li>PROJECT_BINARY_DIR：运行 cmake 命令的目录，通常是 ${PROJECT_SOURCE_DIR}/build</li><li>PROJECT_NAME： 本CMakeLists.txt的project名称，由project 参数决定</li><li>CMAKE_BUILD_TYPE： CMAKE_BUILD_TYPE 构建类型（Debug &amp; Release）</li><li>CMAKE_CURRENT_SOURCE_DIR：这是当前处理的CMakeLists.txt所在的目录</li><li>CMAKE_CURRENT_BINARY_DIR：target 编译目录</li><li>CMAKE_CURRENT_LIST_DIR：CMakeLists.txt 的完整路径</li><li>CMAKE_ARCHIVE_OUTPUT_DIRECTORY：默认存放静态库的文件夹位置</li><li>CMAKE_LIBRARY_OUTPUT_DIRECTORY： 默认存放动态库的文件夹位置</li><li>LIBRARY_OUTPUT_PATH： 重新定义目标链接库文件的存放位置，如果产生的是静态库并且没有指定 CMAKE_ARCHIVE_OUTPUT_DIRECTORY 则存放在该目录下，动态库也类似</li><li>CMAKE_RUNTIME_OUTPUT_DIRECTORY： 存放可执行软件的目录</li><li>CMAKE_MODULE_PATH：定义自己的 cmake 模块所在的路径，SET(CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake)，然后可以用INCLUDE命令来调用自己的模块</li><li>EXECUTABLE_OUTPUT_PATH：重新定义目标二进制可执行文件的存放位置</li><li>可以通过 $ 符号使用变量。（eg：${PROJECT_SOURCE_DIR} 、 ${PROJECT_NAME}</li></ul>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;h1 id=&quot;1、系统信息：&quot;&gt;&lt;a href=&quot;#1、系统信息：&quot; class=&quot;headerlink&quot; title=&quot;1、系统信息：&quot;&gt;&lt;/a&gt;1、系统信息：&lt;/h1&gt;&lt;ul&gt;
+&lt;li&gt;CMAKE_MAJOR_VERSION：cmake      主版本号，比如 3.4.1</summary>
+      
+    
+    
+    
+    
+    <category term="cmake" scheme="http://example.com/tags/cmake/"/>
+    
+  </entry>
   
   <entry>
     <title>博客常用命令</title>
