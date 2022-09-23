@@ -216,7 +216,7 @@
               <span class="post-meta-item-text">发表于</span>
               
 
-              <time title="创建时间：2022-09-23 21:20:37 / 修改时间：21:50:14" itemprop="dateCreated datePublished" datetime="2022-09-23T21:20:37+08:00">2022-09-23</time>
+              <time title="创建时间：2022-09-23 21:20:37 / 修改时间：22:23:58" itemprop="dateCreated datePublished" datetime="2022-09-23T21:20:37+08:00">2022-09-23</time>
             </span>
 
           
@@ -259,7 +259,146 @@
 </ol>
 <p>整个过程步骤有9步，但其中有6步只需要简单的敲一个命令即可，只有剩下的三步需要动手写一些东西。</p>
 <h2 id="【第2步：修改configure-ac文件】"><a href="#【第2步：修改configure-ac文件】" class="headerlink" title="【第2步：修改configure.ac文件】"></a>【第2步：修改configure.ac文件】</h2><p>使用autoscan工具扫描后就会生成一个简单的configure.ac文件，还不足以达到要求，要在框架里面添加一些东西：</p>
-<p>1.1 添加AM_INIT_AUTOMAKE宏</p>
+<p><strong>configure.ac宏定义说明</strong></p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th><strong>宏</strong></th>
+<th><strong>作用</strong></th>
+<th><strong>示例</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>AC_PREREQ</td>
+<td>autoconf最低版本</td>
+<td>AC_PREREQ([2.69])</td>
+</tr>
+<tr>
+<td>AC_INIT</td>
+<td>初始化包信息，将会自动生成PACKAGE_NAME、PACKAGE_VERSION、PACKAGE_BUGREPORT宏</td>
+<td>AC_INIT([Porject],  [1.0], [fwdssg.love@163.com])</td>
+</tr>
+<tr>
+<td>AC_CONFIG_SRCDIR</td>
+<td>通过检测目录中必定存在的文件来判断目录是否存在</td>
+<td>AC_CONFIG_SRCDIR([src/main.cpp])</td>
+</tr>
+<tr>
+<td>AC_CONFIG_HEADERS</td>
+<td>生成config.h文件保存configure.ac定义的宏，此文件可被源文件包含</td>
+<td>AC_CONFIG_HEADERS([config.h])</td>
+</tr>
+<tr>
+<td><strong>AC_CONFIG_MACRO_DIRS</strong></td>
+<td>指定本地宏文件的存放目录，.m4后缀的文件都将被保存进此目录,acloacl命令会自动创建此目录</td>
+<td>AC_CONFIG_MACRO_DIRS([m4])</td>
+</tr>
+<tr>
+<td>AC_CONFIG_AUX_DIR</td>
+<td>指定辅助脚本文件的存放目录</td>
+<td>AC_CONFIG_AUX_DIR([build-aux])</td>
+</tr>
+<tr>
+<td>AC_MSG_CHECKING</td>
+<td>打印”checking XXX  …”</td>
+<td>AC_MSG_CHECKING([for  native Win32])</td>
+</tr>
+<tr>
+<td>AC_MSG_RESULT</td>
+<td>打印checking结果并另起新行</td>
+<td>AC_MSG_RESULT([$os_win32])</td>
+</tr>
+<tr>
+<td>AC_PROG_INSTALL</td>
+<td>生成安装脚本 install-sh</td>
+<td>AC_PROG_INSTALL</td>
+</tr>
+<tr>
+<td>AC_PROG_LIBTOOL</td>
+<td>使得configure能够支持—enable-shared、—disable-shared、—enable-static、—disable-static、—with-pic和—without-pic参数</td>
+<td>AC_PROG_LIBTOOL</td>
+</tr>
+<tr>
+<td>AC_PROG_CXX</td>
+<td>自动检测要使用的C++编译器</td>
+<td>AC_PROG_CXX</td>
+</tr>
+<tr>
+<td>AC_PROG_CC</td>
+<td>自动检测要使用的C编译器</td>
+<td>AC_PROG_CC</td>
+</tr>
+<tr>
+<td>AC_CHECK_HEADERS</td>
+<td>检测系统头文件是否存在</td>
+<td>AC_CHECK_HEADERS([sys/socket.h  netinet/in.h arpa/inet.h])</td>
+</tr>
+<tr>
+<td><strong>AC_SUBST</strong></td>
+<td>输出能够被Makefile.am使用的变量</td>
+<td>AC_SUBST(GLIB2_CFLAGS)</td>
+</tr>
+<tr>
+<td>AC_CONFIG_SUBDIRS</td>
+<td>configure子目录</td>
+<td>AC_CONFIG_SUBDIRS([spice-common])</td>
+</tr>
+<tr>
+<td>PKG_CHECK_MODULES</td>
+<td>检测对应模块是否存在</td>
+<td>PKG_CHECK_MODULES([SPICE_PROTOCOL],  [spice-protocol &gt;= 0.12.11])</td>
+</tr>
+<tr>
+<td>AC_CHECK_FUNCS</td>
+<td>检测对应函数是否可用</td>
+<td>AC_CHECK_FUNCS([setlocale])</td>
+</tr>
+<tr>
+<td>AC_ARG_ENABLE</td>
+<td>为configure添加—XX选项</td>
+<td>AC_ARG_ENABLE([gstaudio],AS_HELP_STRING([—enable-gstaudio=@<a href="&#109;&#x61;&#x69;&#108;&#x74;&#111;&#58;&#58;&#64;&#121;&#101;&#x73;&#x2f;&#97;&#117;&#116;&#x6f;&#x2f;&#110;&#111;&#64;&#58;">&#58;&#64;&#121;&#101;&#x73;&#x2f;&#97;&#117;&#116;&#x6f;&#x2f;&#110;&#111;&#64;&#58;</a>@],  [Enable the GStreamer 1.0 audio backend  @<a href="&#x6d;&#x61;&#105;&#x6c;&#x74;&#111;&#x3a;&#x3a;&#64;&#x64;&#x65;&#x66;&#97;&#117;&#x6c;&#x74;&#61;&#x61;&#x75;&#116;&#111;&#64;&#x3a;">&#x3a;&#64;&#x64;&#x65;&#x66;&#97;&#117;&#x6c;&#x74;&#61;&#x61;&#x75;&#116;&#111;&#64;&#x3a;</a>@]),[],[enable_gstaudio=”auto”])</td>
+</tr>
+<tr>
+<td>AC_OUTPUT</td>
+<td>运行configure后生成的config脚本需要处理的文件，将Makefile.in变成Makefile</td>
+<td>AC_OUTPUT([Makefile])</td>
+</tr>
+<tr>
+<td>AM_INIT_AUTOMAKE</td>
+<td>初始化automake</td>
+<td>AM_INIT_AUTOMAKE([subdir-objects  -Wno-portability])</td>
+</tr>
+<tr>
+<td>AM_GNU_GETTEXT</td>
+<td>初始化gettext</td>
+<td>AM_GNU_GETTEXT([external])</td>
+</tr>
+<tr>
+<td>AC_CONFIG_FILES</td>
+<td>将模板文件实例化，输出文件，假设模板文件名是输出文件名加后缀.in</td>
+<td>AC_CONFIG_FILES([Makefile src/Makefile])</td>
+</tr>
+<tr>
+<td>AM_GNU_GETTEXT_VERSION</td>
+<td>指定gettext最低版本</td>
+<td>AM_GNU_GETTEXT_VERSION([0.19.7])</td>
+</tr>
+<tr>
+<td>IT_PROG_INTLTOOL</td>
+<td>初始化并指定libtool最低版本</td>
+<td>IT_PROG_INTLTOOL([0.35.0])</td>
+</tr>
+<tr>
+<td>AM_CONDITIONAL</td>
+<td>根据条件来定义宏</td>
+<td>AM_CONDITIONAL([OS_WIN32],[test  “$os_win32” = “yes”]) #如果$os_win32的值为yes则#define  OS_WIN32宏</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p> 1.1 添加AM_INIT_AUTOMAKE宏</p>
 <p> 在AC_INIT 宏下一行添加AM_INIT_AUTOMAKE([foreign -Wall -Werror])，中括号里面的选项可以根据需要来修改，具体请看automake手册关于这个宏的说明。</p>
 <p> 1.2 如果需要，添加AC_CONFIG_HEADERS([config.h])宏</p>
 <p> 这个宏的目的是输出config.h，这是一个C的头文件，里面主要是包含很多宏定义#define，宏在代码中的作用就是#ifdef。具体的使用方法如下：</p>
@@ -271,18 +410,15 @@
 <p>编译链接需要用到的程序需要添加在# Checks for programs.注释后面。对于C/C++来说，最常见的就是gcc, g++,静态库编译、动态库编译，对应的选项如下：</p>
 </li>
 </ul>
-<p>AC_PROG_CXX</p>
-<p> AC_PROG_CC</p>
-<p> AC_PROG_RANLIB</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">AC_PROG_CXX</span><br><span class="line">AC_PROG_CC</span><br><span class="line">AC_PROG_RANLIB</span><br></pre></td></tr></table></figure>
 <p> 如果使用libtool编译，则选项如下，注意使用了libtool则需要将AC_PROG_RANLIB去掉</p>
-<p> LT_INIT</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">LT_INIT</span><br></pre></td></tr></table></figure>
 <p> 1.4 configure.ac代码中各个部分添加自己的检测处理</p>
 <p>常见操作对应的宏和样例请参考本文后面的“【常见操作对应的宏】”：。至于具体添加在哪个地方，看configure.ac中的注释已经清楚的告诉你了，例如：</p>
-<p> # Checks for libraries.</p>
-<p> # Checks for library functions.</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># Checks for libraries.</span><br><span class="line"># Checks for library functions.</span><br></pre></td></tr></table></figure>
 <p> 1.5 在AC_OUTPUT上一行添加AC_CONFIG_FILES宏</p>
 <p> 添加这个宏的目的是制定Autoconf输出哪些文件，常见的文件就是Makefile文件，config.h在AC_CONFIG_HEADERS宏里面指定了，这里不需要再次指定。例如：</p>
-<p> AC_CONFIG_FILES([Makefile tools/Makefile common/Makefile worker/Makefile])</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">AC_CONFIG_FILES([Makefile tools/Makefile common/Makefile worker/Makefile])</span><br></pre></td></tr></table></figure>
 <h2 id="【第3步：编写自定义的Autoconf宏】"><a href="#【第3步：编写自定义的Autoconf宏】" class="headerlink" title="【第3步：编写自定义的Autoconf宏】"></a>【第3步：编写自定义的Autoconf宏】</h2><p>如何自定义宏：</p>
 <p> 2.1 新建一个单独的目录，用于存放自定义宏，一般定义为m4</p>
 <p> 2.2 新建自定义宏文件</p>
@@ -290,13 +426,95 @@
 <p> 2.3 编写Autoconf宏</p>
 <p> 具体的编写方式请参考Autoconf的手册第10章节，最好边看手册边对照一个开源软件的样例。这里说明几个需要注意的地方：</p>
 <p> 1)m4宏不是shell，请不要直接在文件中写shell代码，而要在宏的各个部分里面写代码；</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">AC_DEFUN (name, [body])</span><br></pre></td></tr></table></figure>
 <p> 最常见的就是if-else判断，如果要在代码中编写if-else判断，需要使用AS_IF宏，或者在其它宏里面写，例如AC_ARG_WITH, AC_CACHE_CHECK；</p>
 <p> 2)AC_DEFUN是定义autoconf的宏，AC_DEFINE是定义C/C++的config .h里面的宏，不要混淆了；</p>
-<p> 2.4 运行aclocal工具，生成aclocal.m4</p>
-<p> 由于自定义宏是放在我们新建的目录中的，configure.ac并没有像C/C++那样的include语句可用，因此也就找不到这些宏，这时就需要aclocal工具了：aclocal会将自定义宏编译成configure.ac可用的宏，保存在和configure.ac同级目录下的aclocal.m4文件中，这样在configure.ac就能够直接使用了。具体的编译方法如下(m4就是你的目录):</p>
-<p> aclocal -I m4</p>
-<p> 同时需要在根目录下的Makefile.am中添加ACLOCAL_AMFLAGS = -I m4。</p>
-<h2 id="【第6步：编写Makefile-am文件】"><a href="#【第6步：编写Makefile-am文件】" class="headerlink" title="【第6步：编写Makefile.am文件】"></a>【第6步：编写Makefile.am文件】</h2><p> 原则1：每个目录一个Makefile.am文件；同时在configure.ac的AC_CONFIG_FILES宏中指定输出所有的Makefile文件，例如：</p>
+<p> 2.4 在configure.ac中添加：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">AC_CONFIG_MACRO_DIR([m4/])</span><br></pre></td></tr></table></figure>
+<h2 id="【第6步：编写Makefile-am文件】"><a href="#【第6步：编写Makefile-am文件】" class="headerlink" title="【第6步：编写Makefile.am文件】"></a>【第6步：编写Makefile.am文件】</h2><p><strong>Makefile.am宏定义说明</strong></p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th><strong>宏</strong></th>
+<th><strong>作用</strong></th>
+<th><strong>示例</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>ACLOCAL_AMFLAGS</td>
+<td>指定宏文件的存放目录，与AC_CONFIG_MACRO_DIRS成配合使用</td>
+<td>ACLOCAL_AMFLAGS = -I  m4</td>
+</tr>
+<tr>
+<td>SUBDIRS</td>
+<td>指定需要递归automake的子文件夹，即存在Makefile.am的子文件夹</td>
+<td>SUBDIRS =  spice-common src man po doc data</td>
+</tr>
+<tr>
+<td>EXTRA_DIST</td>
+<td>指定要被打包的额外文件，即执行make dist时需要被放入压缩包的文件，一般是不需要参与编译但是又需要被使用的文件，比如图片目录里的图片</td>
+<td>EXTRA_DIST =  $(PACKAGE).spec</td>
+</tr>
+<tr>
+<td>DISTCLEAN_FILES</td>
+<td>执行make distclean时候需要删除的文件，一般是EXTRA_DIST中的.in文件生成的不需要打包的中间文件</td>
+<td>DISTCLEAN_FILES =  $(PACKAGE).spec</td>
+</tr>
+<tr>
+<td>MAINTAINERCLEANFILES</td>
+<td>执行make  maintainer-clean时候需要删除的文件，即执行autoreconf  -vfi、intltoolize —force以及configure或执行autogen.sh后能够重新生成的文件都要放入其中</td>
+<td>MAINTAINERCLEANFILES  = $(srcdir)/AUTHORS</td>
+</tr>
+<tr>
+<td>dist-hook</td>
+<td>执行make dist时需要执行的脚本</td>
+<td>dist-hook:  gen-ChangeLog gen-AUTHORS</td>
+</tr>
+<tr>
+<td>bin_PROGRAMS</td>
+<td>要生成的可执行文件</td>
+<td>bin_PROGRAMS = spicy</td>
+</tr>
+<tr>
+<td>XX_SOURCES</td>
+<td>编译可执行文件所需的源文件</td>
+<td>spicy_SOURCES =  spicy.c</td>
+</tr>
+<tr>
+<td>XX_LIBADD</td>
+<td>链接参数，即pkg-config —libs的结果</td>
+<td>spicy_stats_LDADD =  libspice-client-glib-2.0.la</td>
+</tr>
+<tr>
+<td>XX_CFLAGS</td>
+<td>编译参数，即pkg-config —cflags的结果和-D之类的宏定义</td>
+<td>libvirt_viewer_la_CFLAGS  = -DLOCALE_DIR=””./../share/locale”” $(GLIB2_CFLAGS)</td>
+</tr>
+<tr>
+<td>nodist_XX_SOURCES</td>
+<td>执行make dist时不需要被打包的源文件，一般是根据其他源文件通过脚本临时生成的中间源文件,比如使用glib-genmarshal生成的文件</td>
+<td>nodist_libspice_client_glib_2_0_la_SOURCES  = spice-marshal.c spice-marshal.h</td>
+</tr>
+<tr>
+<td>LDADD</td>
+<td>无法被configure找到但是又需要链接的库或资源文件，例如临时生成的windows下使用的rc文件</td>
+<td>LDADD +=  virt-viewer_rc.$(OBJEXT)</td>
+</tr>
+<tr>
+<td>dist_XX_DATA</td>
+<td>程序运行需要的数据文件，比如图标、配置文件等</td>
+<td>dist_cfg_DATA =  xx.cfg</td>
+</tr>
+<tr>
+<td>dist_bin_SCRIPTS</td>
+<td>程序的脚本文件，将被安装到bin目录</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p> 原则1：每个目录一个Makefile.am文件；同时在configure.ac的AC_CONFIG_FILES宏中指定输出所有的Makefile文件，例如：</p>
 <p> AC_CONFIG_FILES([Makefile tools/Makefile common/Makefile worker/Makefile])</p>
 <p> 原则2：父目录需要包含子目录</p>
 <p> 在父目录下的Makefile.am中添加: SUBDIRS =所有子目录，例如SUBDIRS=test tools</p>
@@ -410,11 +628,7 @@
 <p> **FLAGS(例如_CFLAGS/_CXXFLAGS)：编译选项，对应gcc命令中的-O2, -g, -I等选项</p>
 <p> 举例如下：</p>
 <p> #不同的编译类型只是第一句不一样，后面的编译配置都是一样的</p>
-<p> bin_PROGRAMS= myproject</p>
-<p> myproject_SOURCES = main.c</p>
-<p> myproject_LDADD  = ./utils/libutils.a ./module1/libmodule1.a ./core1/libcore.a</p>
-<p> myproject_LDFLAGS = -L/home/test/local -lmemcached</p>
-<p> myproject_CFLAGS = -I./core1/ -I./module1/ -I./utils/ -O2 -g</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">bin_PROGRAMS= myproject</span><br><span class="line">myproject_SOURCES = main.c</span><br><span class="line">myproject_LDADD  = ./utils/libutils.a ./module1/libmodule1.a ./core1/libcore.a</span><br><span class="line">myproject_LDFLAGS = -L/home/test/local -lmemcached</span><br><span class="line">myproject_CFLAGS = -I./core1/ -I./module1/ -I./utils/ -O2 -g</span><br></pre></td></tr></table></figure>
 <h1 id="【常见操作对应的宏】"><a href="#【常见操作对应的宏】" class="headerlink" title="【常见操作对应的宏】"></a>【常见操作对应的宏】</h1><p>1)给./configure添加—with-package参数，例如：./configure —with-libmemcached</p>
 <p> AC_ARG_WITH，具体如何写请参考autoconf手册15.2章节，里面给了一个完整的样例。</p>
 <p> 2)给./configure添加–enable-feature参数，例如：./configure–enable-multithread</p>
