@@ -1,8 +1,7 @@
 ---
-typora-root-url: vscode-basic
 title: vscode-basic
-date: 2023-04-20 14:21:11
-tags:vscode
+date: 2023-04-20 15:42:18
+tags: vscode
 ---
 
 
