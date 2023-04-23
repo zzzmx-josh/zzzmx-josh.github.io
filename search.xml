@@ -4,6 +4,25 @@
   
     
     <entry>
+      <title>Xshell远程服务器本地可视化方法</title>
+      <link href="/2023/04/23/Xshell%E8%BF%9C%E7%A8%8B%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%9C%AC%E5%9C%B0%E5%8F%AF%E8%A7%86%E5%8C%96%E6%96%B9%E6%B3%95/"/>
+      <url>/2023/04/23/Xshell%E8%BF%9C%E7%A8%8B%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%9C%AC%E5%9C%B0%E5%8F%AF%E8%A7%86%E5%8C%96%E6%96%B9%E6%B3%95/</url>
+      
+        <content type="html"><![CDATA[<h1 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h1><p>在大多数时候，我们连接的远程服务器没有图形界面，不能支持浏览器功能，这时我们需要建立本地服务器与远程服务器的通信。</p><p>以Tensorboard的本地可视化方法为例：</p><h1 id="不推荐："><a href="#不推荐：" class="headerlink" title="不推荐："></a>不推荐：</h1><p>网上常见的方法：</p><p>在本地计算机上，打开一个新的终端窗口，并使用以下命令创建一个SSH隧道：</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ssh -L 6006:localhost:6006 username@remote\_server\_ip</span><br></pre></td></tr></table></figure><p>其中，username是您在远程服务器上的用户名，remote_server_ip是远程服务器的IP地址。</p><p>1.在远程服务器上启动TensorBoard：</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tensorboard --logdir=/path/to/logs</span><br></pre></td></tr></table></figure><p>2.找到TensorBoard启动时显示的URL，类似于以下内容：</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">TensorBoard 1.14.0 at [http://localhost:6006/](http://localhost:6006/) (Press CTRL+C to quit)</span><br></pre></td></tr></table></figure><p>3.在本地计算机上，打开Web浏览器并访问以下URL：</p><p><a href="http://localhost:6006/">http://localhost:6006</a></p><p>这个方法我尝试了多次，都不成功：</p><p><img src="/2023/04/23/Xshell%E8%BF%9C%E7%A8%8B%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%9C%AC%E5%9C%B0%E5%8F%AF%E8%A7%86%E5%8C%96%E6%96%B9%E6%B3%95/image_1.44605818.png"></p><p><strong style="color:#00b050;">可能windows电脑不适用</strong></p><h1 id="推荐方法：Xshell隧道"><a href="#推荐方法：Xshell隧道" class="headerlink" title="推荐方法：Xshell隧道"></a>推荐方法：Xshell隧道</h1><h2 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h2><p>打开Xshell，右击相应的会话，在弹出的对话框中选择属性-&gt;连接-&gt;SSH-&gt;隧道-&gt;添加。</p><p>在侦听端口和目标端口中填入相同的端口，此处填写了6006;（这里的端口号，也可以随便换成其他的，只要保证两处相同即可）。</p><p><img src="/2023/04/23/Xshell%E8%BF%9C%E7%A8%8B%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%9C%AC%E5%9C%B0%E5%8F%AF%E8%A7%86%E5%8C%96%E6%96%B9%E6%B3%95/image_2.73d50b2e.png"></p><h2 id="运行"><a href="#运行" class="headerlink" title="运行"></a>运行</h2><p>服务器端启动tensorboard</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tensrboard --logdir=log地址 --port=6006</span><br></pre></td></tr></table></figure><p>本地浏览器查看</p><p>然后再本地浏览器中输入：<a href="http://127.0.0.1:6006/">http://127.0.0.1:6006</a> 或者localhost:6006，可以通过tensorboard查看目前的训练情况。</p><p><img src="/2023/04/23/Xshell%E8%BF%9C%E7%A8%8B%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%9C%AC%E5%9C%B0%E5%8F%AF%E8%A7%86%E5%8C%96%E6%96%B9%E6%B3%95/image_3.5e37b6bd.png"></p>]]></content>
+      
+      
+      
+        <tags>
+            
+            <tag> linux </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>mpirun运行参数</title>
       <link href="/2023/04/20/mpirun%E8%BF%90%E8%A1%8C%E5%8F%82%E6%95%B0/"/>
       <url>/2023/04/20/mpirun%E8%BF%90%E8%A1%8C%E5%8F%82%E6%95%B0/</url>
