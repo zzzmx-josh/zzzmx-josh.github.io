@@ -64,6 +64,12 @@ typora-root-url: vscode-basic
 
 11. Markdown Preview Enhanced（markdown 预览增强）
 
+12. GitHub Pull Requests and Issues
+
+    自动识别仓库变动，一键push和pull，特别方便
+
+    ![image-20230423173040299](image-20230423173040299.png)
+
 12. WD-TabNine
 
     非常强大的代码自动补全工具

@@ -353,6 +353,7 @@ katex:
 # see https://butterfly.js.org/posts/ceeb73f/#搜索系統
 # --------------------------------------
 
+
 #这个搜索系统我们不开启，没必要用这么麻烦的
 # Algolia search
 algolia_search:
@@ -441,13 +442,15 @@ gitalk:
 # valine
 # https://valine.js.org
 valine:
-  appId: # leancloud application app id
-  appKey: # leancloud application app key
+  appId: nI2AkZMqoEw7aBT90xno40Sx-gzGzoHsz
+  appKey: WDgUxw5N9rlsGvSldC5Opy5H
   avatar: monsterid # gravatar style https://valine.js.org/#/avatar
   serverURLs: # This configuration is suitable for domestic custom domain name users, overseas version will be automatically detected (no need to manually fill in)
   bg: # valine background
   visitor: false
   option:
+
+
 
 # waline - A simple comment system with backend support fork from Valine
 # https://waline.js.org/
