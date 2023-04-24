@@ -400,15 +400,15 @@ addtoany:
 # --------------------------------------
 
 comments:
-  # Up to two comments system, the first will be shown as default
-  # Choose: Disqus/Disqusjs/Livere/Gitalk/Valine/Waline/Utterances/Facebook Comments/Twikoo/Giscus/Remark42/Artalk
-  use: # Valine,Disqus
-  text: true # Display the comment name next to the button
-  # lazyload: The comment system will be load when comment element enters the browser's viewport.
-  # If you set it to true, the comment count will be invalid
-  lazyload: false
-  count: false # Display comment count in post's top_img
-  card_post_count: false # Display comment count in Home Page
+  use: # 使用的评论（请注意，填写的评论首字母需要大写。最多支持两个，如果不需要请留空）
+    - Valine
+    # - Disqus
+  # - Valine
+  # - Disqus
+  text: true # 是否显示评论服务商的名字
+  lazyload: false # 是否为评论开启 lazyload，开启后，只有滚动到评论位置时才会加载评论所需要的资源（开启 lazyload 后，评论数将不显示）
+  count: false # 是否在文章顶部显示评论数 livere 和 utterances 不支持评论数显示
+
 
 # disqus
 # https://disqus.com/
