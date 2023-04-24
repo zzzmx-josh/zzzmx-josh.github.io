@@ -1,0 +1,229 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>linux安装onedrive | second wind</title><meta name="author" content="zzzmx-josh"><meta name="copyright" content="zzzmx-josh"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="问题onedrive作为一个能跨平台的云盘，使用起来特别香，最近还增加了增量备份、查看历史版本等功能，特别适合有多个设备、需要频繁传输数据的使用者。 我经常需要在Linux平台保存数据，将处理的结果传输到win平台上，所以在服务器上也安装了OneDrive，主要的原理是磁盘挂载，相当于起到“扩大”磁盘空间的作用。 以contos7为例，仓库链接：onedrive 安装依赖需要的依赖：libcurl">
+<meta property="og:type" content="article">
+<meta property="og:title" content="linux安装onedrive">
+<meta property="og:url" content="http://example.com/2023/04/24/linux%E5%AE%89%E8%A3%85onedrive/index.html">
+<meta property="og:site_name" content="second wind">
+<meta property="og:description" content="问题onedrive作为一个能跨平台的云盘，使用起来特别香，最近还增加了增量备份、查看历史版本等功能，特别适合有多个设备、需要频繁传输数据的使用者。 我经常需要在Linux平台保存数据，将处理的结果传输到win平台上，所以在服务器上也安装了OneDrive，主要的原理是磁盘挂载，相当于起到“扩大”磁盘空间的作用。 以contos7为例，仓库链接：onedrive 安装依赖需要的依赖：libcurl">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/img/avatar.jpg">
+<meta property="article:published_time" content="2023-04-24T02:43:06.000Z">
+<meta property="article:modified_time" content="2023-04-24T02:47:02.460Z">
+<meta property="article:author" content="zzzmx-josh">
+<meta property="article:tag" content="linux">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/img/avatar.jpg"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="http://example.com/2023/04/24/linux%E5%AE%89%E8%A3%85onedrive/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","preload":false,"top_n_per_article":1,"unescape":false,"languages":{"hits_empty":"找不到您查询的内容：${query}","hits_stats":"共找到 ${hits} 篇文章"}},
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  }
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'linux安装onedrive',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2023-04-24 10:47:02'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+    win.getCSS = (url,id = false) => new Promise((resolve, reject) => {
+      const link = document.createElement('link')
+      link.rel = 'stylesheet'
+      link.href = url
+      if (id) link.id = id
+      link.onerror = reject
+      link.onload = link.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        link.onload = link.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(link)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><link rel="stylesheet" href="/css/background.css"><meta name="generator" content="Hexo 6.3.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/img/avatar.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">5</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">4</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">0</div></a></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header"><nav id="nav"><span id="blog-info"><a href="/" title="second wind"><span class="site-name">second wind</span></a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search" href="javascript:void(0);"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div></div><div id="toggle-menu"><a class="site-page" href="javascript:void(0);"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">linux安装onedrive</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2023-04-24T02:43:06.000Z" title="发表于 2023-04-24 10:43:06">2023-04-24</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2023-04-24T02:47:02.460Z" title="更新于 2023-04-24 10:47:02">2023-04-24</time></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="linux安装onedrive"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h1 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h1><p>onedrive作为一个能跨平台的云盘，使用起来特别香，最近还增加了增量备份、查看历史版本等功能，特别适合有多个设备、需要频繁传输数据的使用者。</p>
+<p>我经常需要在Linux平台保存数据，将处理的结果传输到win平台上，所以在服务器上也安装了OneDrive，主要的原理是磁盘挂载，相当于起到“扩大”磁盘空间的作用。</p>
+<p>以contos7为例，仓库链接：<a target="_blank" rel="noopener" href="https://github.com/skilion/onedrive">onedrive</a></p>
+<h1 id="安装依赖"><a href="#安装依赖" class="headerlink" title="安装依赖"></a>安装依赖</h1><p>需要的依赖：libcurl-devel，sqlite-devel, 编译工具dmd</p>
+<p>如果有root权限，可以直接通过：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo yum install libcurl-devel</span><br><span class="line">sudo yum install sqlite-devel</span><br></pre></td></tr></table></figure>
+
+<p>如果没有root权限，通过下载源代码编译，不过需要把这些动态库的路径添加到bashrc里面，具体可以参考<a target="_blank" rel="noopener" href="https://www.jianshu.com/p/da92ca36a220/">无root权限下解决编译时的依赖问题</a> ：</p>
+<p>安装有先后</p>
+<h2 id="openssl"><a href="#openssl" class="headerlink" title="openssl"></a>openssl</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">wget https://www.openssl.org/source/openssl-1.0.2m.tar.gz</span><br><span class="line">tar -zxvf openssl-1.0.2m.tar.gz &amp;&amp; cd openssl-1.0.2m</span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">添加shared生成动态库</span></span><br><span class="line">./config --prefix=$HOME/usr shared</span><br><span class="line">make &amp;&amp; make install</span><br><span class="line">卸载使用 make clean</span><br></pre></td></tr></table></figure>
+
+<h2 id="libssh2"><a href="#libssh2" class="headerlink" title="libssh2"></a>libssh2</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">wget https://www.libssh2.org/download/libssh2-1.8.0.tar.gz</span><br><span class="line">tar -zxvf libssh2-1.8.0.tar.gz &amp;&amp; cd libssh2-1.8.0</span><br><span class="line">./configure --with-libssl-prefix=$HOME/usr/ssl --prefix=$HOME/usr</span><br><span class="line">make &amp;&amp; make install</span><br></pre></td></tr></table></figure>
+
+<h2 id="libcurl"><a href="#libcurl" class="headerlink" title="libcurl"></a>libcurl</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">wget https://curl.haxx.se/download/curl-7.56.1.tar.gz</span><br><span class="line">tar -zxvf curl-7.56.1.tar.gz &amp;&amp; cd curl-7.56.1</span><br><span class="line">./configure --prefix=$HOME/usr --enable-http  --enable-https --enable-ftp --enable-file --enable-proxy --enable-telnet --enable-libcurl-option --enable-ipv6 --with-lib --with-ssl</span><br><span class="line">make &amp;&amp; make install</span><br></pre></td></tr></table></figure>
+
+<p>安装成功后记得把路径加入到环境变量，</p>
+<p>将以上内容加入到.bashrc中：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">export LD_LIBRARY_PAHT=$LD_LIBRARY_PATH:$HOME/usr/lib64</span><br><span class="line">export LD_LIBRARY_PAHT=$LD_LIBRARY_PATH:$HOME/usr/lib</span><br><span class="line">export PKG_CONFIG_PATH=$HOME/usr/lib/pkgconfig:$HOME/usr/share/pkgconfig</span><br><span class="line">export PATH=$HOME/usr/bin:$PATH</span><br></pre></td></tr></table></figure>
+
+<p>使设置生效：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">source ~/.bashrc</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="最后安装dlang"><a href="#最后安装dlang" class="headerlink" title="最后安装dlang"></a>最后安装dlang</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">wget https://dlang.org/install.sh </span><br><span class="line">bash install.sh install dmd-2.080.0</span><br></pre></td></tr></table></figure>
+
+<p>我安装的版本是dmd-2.080.0，安装最新的程序后面会报错</p>
+<p>安装成功后：</p>
+<p><img src="/linux%E5%AE%89%E8%A3%85onedrive/image_1.8ec48fc8.png"></p>
+<p>使用 <code>source ~/dlang/dmd-2.080.0/activate</code> 命令可进入环境</p>
+<p>注意：onedrive安装过程在进入环境后才进行的，安装完再退出环境。</p>
+<h1 id="安装onedrive"><a href="#安装onedrive" class="headerlink" title="安装onedrive"></a>安装onedrive</h1><h2 id="下载"><a href="#下载" class="headerlink" title="下载"></a>下载</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">wget https://github.com/abraunegg/onedrive/archive/refs/tags/v2.3.4.tar.gz</span><br><span class="line">tar zxvf v2.3.4.tar.gz</span><br><span class="line">cd onedrive-2.3.4/</span><br></pre></td></tr></table></figure>
+
+<h2 id="修改配置"><a href="#修改配置" class="headerlink" title="修改配置"></a>修改配置</h2><p>由于不是使用root命令安装, 所以需要修改makefile.in</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vim makefile.in</span><br></pre></td></tr></table></figure>
+
+<ol>
+<li>加入日志文件路径</li>
+</ol>
+<p><img src="/linux%E5%AE%89%E8%A3%85onedrive/image_2.49f672c6.png"></p>
+<ol start="2">
+<li>更改用户</li>
+</ol>
+<p><img src="/linux%E5%AE%89%E8%A3%85onedrive/image_3.1df847f1.png"></p>
+<p>将此处的 -o root -g users 改成 -o 用户名，删除后面的-g users</p>
+<p>并且将下一行的onedrive 后面的${DESDIR}删除</p>
+<h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./configure --prefix=$HOME/usr &amp;&amp; make &amp;&amp; make install</span><br></pre></td></tr></table></figure>
+
+<p>安装完，用deactivate 退出环境</p>
+<h1 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h1><h2 id="授权"><a href="#授权" class="headerlink" title="授权"></a>授权</h2><p>现在您需要向 Microsoft 授权 Onedrive，以便它可以访问您的帐户。在终端中输入以下内容：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">onedrive</span><br></pre></td></tr></table></figure>
+
+<p><img src="/linux%E5%AE%89%E8%A3%85onedrive/image_4.c5e19314.png"></p>
+<p>它会提示您访问该 URL 以获得授权。</p>
+<p>复制此链接，在windows浏览器中打开，您将看到一个空白页面。复制 URL 并在提示符下将其粘贴到终端中。</p>
+<p>登录您的 OneDrive 帐户，并复制此处的链接粘贴到终端。</p>
+<p>完成以上步骤后，Onedrive 将开始将云中的所有文件下载到本地文件夹。</p>
+<h2 id="同步配置"><a href="#同步配置" class="headerlink" title="同步配置"></a>同步配置</h2><p>您可以在 Onedrive git 文件夹中找到“config”文件。要激活，请将其移至 ~&#x2F;.config&#x2F;onedrive&#x2F;文件夹。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">mkdir -p ~/.config/onedrive/</span><br><span class="line">cp ~/onedrive/config ~/.config/onedrive/</span><br></pre></td></tr></table></figure>
+
+<p>打开配置文件。您可以配置两个选项：“sync_dir”和“skip_files”。</p>
+<p>sync_dir：存储 OneDrive 文件的位置。放置在此文件夹中&#x2F;从中删除的所有文件，都将同步到云端。</p>
+<p>skip_files：不同步的文件类型（或文件模式）。</p>
+<p>完成更改后，保存并重新启动 Onedrive。</p>
+<p>具体配置请参考<a target="_blank" rel="noopener" href="https://www.jianshu.com/p/017aa8ceef02/">linux onedrive配置</a></p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="http://example.com">zzzmx-josh</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="http://example.com/2023/04/24/linux%E5%AE%89%E8%A3%85onedrive/">http://example.com/2023/04/24/linux%E5%AE%89%E8%A3%85onedrive/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">转载请注明出处: </span><span class="post-copyright-info">All articles in this blog are licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> unless stating additionally.</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/linux/">linux</a></div><div class="post_share"><div class="social-share" data-image="/img/avatar.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="next-post pull-full"><a href="/2023/04/23/linux%E7%9A%84matplotlib%E5%AE%89%E8%A3%85arial%E5%AD%97%E4%BD%93/" title="linux的matplotlib安装arial字体"><div class="cover" style="background: var(--default-bg-color)"></div><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">linux的matplotlib安装arial字体</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><div><a href="/2023/04/23/Xshell%E8%BF%9C%E7%A8%8B%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%9C%AC%E5%9C%B0%E5%8F%AF%E8%A7%86%E5%8C%96%E6%96%B9%E6%B3%95/" title="Xshell远程服务器本地可视化方法"><div class="cover" style="background: var(--default-bg-color)"></div><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2023-04-23</div><div class="title">Xshell远程服务器本地可视化方法</div></div></a></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="/img/avatar.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">zzzmx-josh</div><div class="author-info__description"></div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">5</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">4</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">0</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/zzzmx-josh"><i class="fab fa-github"></i><span>Follow Me</span></a></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">Record all those very nasty stuffs</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E9%97%AE%E9%A2%98"><span class="toc-number">1.</span> <span class="toc-text">问题</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%AE%89%E8%A3%85%E4%BE%9D%E8%B5%96"><span class="toc-number">2.</span> <span class="toc-text">安装依赖</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#openssl"><span class="toc-number">2.1.</span> <span class="toc-text">openssl</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#libssh2"><span class="toc-number">2.2.</span> <span class="toc-text">libssh2</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#libcurl"><span class="toc-number">2.3.</span> <span class="toc-text">libcurl</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9C%80%E5%90%8E%E5%AE%89%E8%A3%85dlang"><span class="toc-number">2.4.</span> <span class="toc-text">最后安装dlang</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%AE%89%E8%A3%85onedrive"><span class="toc-number">3.</span> <span class="toc-text">安装onedrive</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%8B%E8%BD%BD"><span class="toc-number">3.1.</span> <span class="toc-text">下载</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BF%AE%E6%94%B9%E9%85%8D%E7%BD%AE"><span class="toc-number">3.2.</span> <span class="toc-text">修改配置</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%89%E8%A3%85"><span class="toc-number">3.3.</span> <span class="toc-text">安装</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8"><span class="toc-number">4.</span> <span class="toc-text">使用</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%8E%88%E6%9D%83"><span class="toc-number">4.1.</span> <span class="toc-text">授权</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%90%8C%E6%AD%A5%E9%85%8D%E7%BD%AE"><span class="toc-number">4.2.</span> <span class="toc-text">同步配置</span></a></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2023/04/24/linux%E5%AE%89%E8%A3%85onedrive/" title="linux安装onedrive">linux安装onedrive</a><time datetime="2023-04-24T02:43:06.000Z" title="发表于 2023-04-24 10:43:06">2023-04-24</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2023/04/23/linux%E7%9A%84matplotlib%E5%AE%89%E8%A3%85arial%E5%AD%97%E4%BD%93/" title="linux的matplotlib安装arial字体">linux的matplotlib安装arial字体</a><time datetime="2023-04-23T08:46:35.000Z" title="发表于 2023-04-23 16:46:35">2023-04-23</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2023/04/23/Xshell%E8%BF%9C%E7%A8%8B%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%9C%AC%E5%9C%B0%E5%8F%AF%E8%A7%86%E5%8C%96%E6%96%B9%E6%B3%95/" title="Xshell远程服务器本地可视化方法">Xshell远程服务器本地可视化方法</a><time datetime="2023-04-23T02:39:16.000Z" title="发表于 2023-04-23 10:39:16">2023-04-23</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2023/04/20/mpirun%E8%BF%90%E8%A1%8C%E5%8F%82%E6%95%B0/" title="mpirun运行参数">mpirun运行参数</a><time datetime="2023-04-20T14:16:19.000Z" title="发表于 2023-04-20 22:16:19">2023-04-20</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2023/04/20/vscode-basic/" title="vscode-basic">vscode-basic</a><time datetime="2023-04-20T07:42:18.000Z" title="发表于 2023-04-20 15:42:18">2023-04-20</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2023 By zzzmx-josh</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox/fancybox.umd.min.js"></script><div class="js-pjax"></div><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><span id="loading-status"></span><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="is-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据库加载中</span></div><div class="search-wrap"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div><hr/><div class="no-result" id="local-search-results"></div><div id="local-search-stats-wrap"></div></div></div><div id="search-mask"></div><script src="/js/search/local-search.js"></script></div></div></body></html>
