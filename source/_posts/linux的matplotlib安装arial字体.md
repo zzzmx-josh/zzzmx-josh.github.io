@@ -1,7 +1,7 @@
 ---
 title: linux的matplotlib安装arial字体
 date: 2023-04-23 16:46:35
-tags: python, linux
+tags: [python, linux]
 ---
 
 # 问题
@@ -83,7 +83,6 @@ axes.unicode_minus : False
 - 宋体：SimSun
 
 - 微软雅黑体：Microsoft YaHei
-
 
 
 
