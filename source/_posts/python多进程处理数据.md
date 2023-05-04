@@ -137,12 +137,16 @@ def error_callback(e):
 
   # 将总数据集进行分割，分割成子数据集
 def task_split(path,batch_num):
-  path = list(Path(path).glob("*"))
+  pathlist = list(Path(path).glob("*"))
   # 数据集长度
   Len_path = len(pathlist)            
   param_dict ={}
   
   ## 数据分割
+    
+  if Len_path <= batch_num:
+    batch_num = Len_path    
+    
   for i in range(batch_num):
     task = "task" + str(i)
     param_dict[task] = [(pathlist[i])]
